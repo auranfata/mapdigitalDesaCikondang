@@ -740,33 +740,41 @@
         bounds_group.addLayer(layer_Jalan_6);
         map.addLayer(layer_Jalan_6);
         function pop_Titik_Fasilitas_dan_Wilayah_7(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(String(feature.properties['fid']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Nama_Lokasi</th>\
-                        <td>' + (feature.properties['Nama_Lokasi'] !== null ? autolinker.link(String(feature.properties['Nama_Lokasi']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Kategori</th>\
-                        <td>' + (feature.properties['Kategori'] !== null ? autolinker.link(String(feature.properties['Kategori']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Deskripsi</th>\
-                        <td>' + (feature.properties['Deskripsi'] !== null ? autolinker.link(String(feature.properties['Deskripsi']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Foto</th>\
-                        <td>' + (feature.properties['Foto'] !== null ? '<img src="images/' + String(feature.properties['Foto']).replace(/[\\/:]/g, '_').trim().replace(/'/g, '\'').replace(/"/g, '&quot;') + '">' : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            var Nama_Lokasi = feature.properties['Nama_Lokasi'] || 'Tidak Diketahui';
+            var Kategori = feature.properties['Kategori'] || 'Tidak Diketahui';
+            var Deskripsi = feature.properties['Deskripsi'] || 'Tidak Diketahui';
+            var rawFoto = feature.properties['Foto'] || 'no-image.jpg';
+
+            var namaFileFoto = rawFoto.split('\\').pop().split('/').pop();
+            var foto = namaFileFoto
+
+            var popupContent = '<div style="font-family: \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif; width: 100%; box-sizing: border-box;">\
+                <h3 style="margin: 0 0 10px 0; color: #2c3e50; border-bottom: 2px solid #27ae60; padding-bottom: 5px; font-size: clamp(14px, 4vw, 16px); text-transform: uppercase;">' + Nama_Lokasi + '</h3>\
+                \
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: clamp(12px, 3vw, 13px);">\
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #ecf0f1; padding-bottom: 4px;">\
+                        <span style="font-weight: bold; color: #34495e;">Kategori:</span>\
+                        <span style="text-align: right; color: #2c3e50;">' + Kategori + '</span>\
+                    </div>\
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #ecf0f1; padding-bottom: 4px;">\
+                        <span style="font-weight: bold; color: #34495e;">Deskripsi:</span>\
+                        <span style="text-align: right; color: #2c3e50; word-break: break-word; max-width: 65%;">' + Deskripsi + '</span>\
+                    </div>\
+                </div>\
+                \
+                <div style="margin-top: 12px; width: 100%;">\
+                    <img src="css/images/' + foto + '" alt="Foto ' + Kategori + '" onerror="this.style.display=\'none\'" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: block;">\
+                    <div style="font-size: 10px; color: #95a5a6; margin-top: 6px; text-align: center; font-style: italic;">*Gambar ilustrasi visual</div>\
+                </div>\
+            </div>';
+            
+            // 4. Tembakkan ke layar
+            layer.bindPopup(popupContent, {maxWidth: 320,     // Batas maksimal lebar di PC
+                minWidth: 200,     // Batas minimal agar teks tidak tergencet
+                autoPanPadding: [20, 20], // Memberi jarak aman dari tepi layar HP
+                className: 'custom-responsive-popup'});
         }
+
 
         function style_Titik_Fasilitas_dan_Wilayah_7_0(feature) {
             switch(String(feature.properties['Nama_Lokasi'])) {
@@ -1016,29 +1024,29 @@
         bounds_group.addLayer(layer_Titik_Fasilitas_dan_Wilayah_7);
         map.addLayer(layer_Titik_Fasilitas_dan_Wilayah_7);
         function pop_Zona_Rawan_Bencana_8(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">fid</th>\
-                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(String(feature.properties['fid']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Zona_Risiko</th>\
-                        <td>' + (feature.properties['Zona_Risiko'] !== null ? autolinker.link(String(feature.properties['Zona_Risiko']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Status_Warna</th>\
-                        <td>' + (feature.properties['Status_Warna'] !== null ? autolinker.link(String(feature.properties['Status_Warna']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Rekomendasi</th>\
-                        <td>' + (feature.properties['Rekomendasi'] !== null ? autolinker.link(String(feature.properties['Rekomendasi']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            var Zona_Risiko = feature.properties['Zona_Risiko'] || 'Belum Terdefinisi';
+            var Status_Warna = feature.properties['Status_Warna'] || 'Belum Terdefinisi';
+            var Rekomendasi = feature.properties['Rekomendasi'] || 'Belum Terdefinisi';
+          
+             var popupContent = '<div style="font-family: \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif; width: 100%; box-sizing: border-box;">\
+                <h3 style="margin: 0 0 10px 0; color: #2c3e50; border-bottom: 2px solid #27ae60; padding-bottom: 5px; font-size: clamp(14px, 4vw, 16px); text-transform: uppercase;">' + Zona_Risiko + '</h3>\
+                \
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: clamp(12px, 3vw, 13px);">\
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #ecf0f1; padding-bottom: 4px;">\
+                        <span style="font-weight: bold; color: #34495e;">Status Warna:</span>\
+                        <span style="text-align: right; color: #2c3e50;">' + Status_Warna + '</span>\
+                    </div>\
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #ecf0f1; padding-bottom: 4px;">\
+                        <span style="font-weight: bold; color: #34495e;">Rekomendasi:</span>\
+                        <span style="text-align: right; color: #2c3e50; word-break: break-word; max-width: 65%;">' + Rekomendasi + '</span>\
+                    </div>\
+            </div>';
+            
+            // 4. Tembakkan ke layar
+            layer.bindPopup(popupContent, {maxWidth: 320,     // Batas maksimal lebar di PC
+                minWidth: 200,     // Batas minimal agar teks tidak tergencet
+                autoPanPadding: [20, 20], // Memberi jarak aman dari tepi layar HP
+                className: 'custom-responsive-popup'});
         }
 
         function style_Zona_Rawan_Bencana_8_0(feature) {
